@@ -1,0 +1,211 @@
+[
+    {
+        "label": "Flask",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "render_template",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "request",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "jsonify",
+        "importPath": "flask",
+        "description": "flask",
+        "isExtraImport": true,
+        "detail": "flask",
+        "documentation": {}
+    },
+    {
+        "label": "CORS",
+        "importPath": "flask_cors",
+        "description": "flask_cors",
+        "isExtraImport": true,
+        "detail": "flask_cors",
+        "documentation": {}
+    },
+    {
+        "label": "DecisionTreeRegressor",
+        "importPath": "sklearn.tree",
+        "description": "sklearn.tree",
+        "isExtraImport": true,
+        "detail": "sklearn.tree",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib.pyplot",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib.pyplot",
+        "description": "matplotlib.pyplot",
+        "detail": "matplotlib.pyplot",
+        "documentation": {}
+    },
+    {
+        "label": "numpy",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "numpy",
+        "description": "numpy",
+        "detail": "numpy",
+        "documentation": {}
+    },
+    {
+        "label": "base64",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "base64",
+        "description": "base64",
+        "detail": "base64",
+        "documentation": {}
+    },
+    {
+        "label": "threading",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "threading",
+        "description": "threading",
+        "detail": "threading",
+        "documentation": {}
+    },
+    {
+        "label": "tempfile",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "tempfile",
+        "description": "tempfile",
+        "detail": "tempfile",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "BytesIO",
+        "importPath": "io",
+        "description": "io",
+        "isExtraImport": true,
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "matplotlib",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "matplotlib",
+        "description": "matplotlib",
+        "detail": "matplotlib",
+        "documentation": {}
+    },
+    {
+        "label": "index",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def index():\n    return render_template('index.html')\ndef save_plot(features, quality_prediction):\n    # Tạo một đối tượng Figure với kích thước là 10x6 inches\n    plt.figure(figsize=(10, 6))\n    # Lưu biểu đồ xuống một tệp tạm thời với định dạng PNG\n    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=\".png\")\n    plt.savefig(temp_file.name)\n    # Đóng đối tượng Figure để giải phóng tài nguyên\n    plt.close()",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "save_plot",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def save_plot(features, quality_prediction):\n    # Tạo một đối tượng Figure với kích thước là 10x6 inches\n    plt.figure(figsize=(10, 6))\n    # Lưu biểu đồ xuống một tệp tạm thời với định dạng PNG\n    temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=\".png\")\n    plt.savefig(temp_file.name)\n    # Đóng đối tượng Figure để giải phóng tài nguyên\n    plt.close()\n    # Trả về đường dẫn của tệp tạm thời\n    return temp_file.name",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "predict_quality",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def predict_quality():\n    # Kiểm tra xem có phải là phương thức POST hay không\n    if request.method == 'POST':\n        # Lấy giá trị từ form và chuyển đổi sang kiểu float\n        features = [float(request.form['feature_' + str(i)]) for i in range(11)]\n        # Dự đoán chất lượng sử dụng hàm predict (giả sử nó đã được định nghĩa)\n        quality_prediction = predict(features)\n        # Kiểm tra xem hiện tại có đang ở trong luồng chính hay không\n        if threading.current_thread() != threading.main_thread():\n            # Nếu không ở trong luồng chính, chuyển sang luồng chính trước khi vẽ biểu đồ",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "plot",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def plot():\n    features = [float(request.form['feature_' + str(i)]) for i in range(11)]\n    quality_prediction = predict(features)\n    # Vẽ biểu đồ\n    img_data = plot_prediction(features, quality_prediction)\n    img_str = base64.b64encode(img_data).decode('utf-8')\n    return jsonify({'img': img_str, 'prediction': quality_prediction})\n# Hàm dự đoán sử dụng mô hình\ndef predict(features):\n    return model.predict([features])[0]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "predict",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def predict(features):\n    return model.predict([features])[0]\n# Hàm vẽ biểu đồ\ndef plot_prediction(features, prediction):\n    feature_names = ['Độ axit cố định', 'Độ bay hơi axit', 'Axit citric', 'Đường dư', 'Clorua',\n                     'Lưu huỳnh đioxit tự do', 'Tổng lượng lưu huỳnh điôxít', 'Mật độ', 'Độ pH', 'Muối Sulfat', 'Cồn']\n    # Màu sắc cho mỗi cột\n    colors = plt.cm.viridis(np.linspace(0, 1, len(features)))\n    plt.figure(figsize=(10, 6))\n    bars = plt.bar(feature_names, features, color=colors, alpha=0.7, label='Đặc trưng đầu vào')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "plot_prediction",
+        "kind": 2,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "def plot_prediction(features, prediction):\n    feature_names = ['Độ axit cố định', 'Độ bay hơi axit', 'Axit citric', 'Đường dư', 'Clorua',\n                     'Lưu huỳnh đioxit tự do', 'Tổng lượng lưu huỳnh điôxít', 'Mật độ', 'Độ pH', 'Muối Sulfat', 'Cồn']\n    # Màu sắc cho mỗi cột\n    colors = plt.cm.viridis(np.linspace(0, 1, len(features)))\n    plt.figure(figsize=(10, 6))\n    bars = plt.bar(feature_names, features, color=colors, alpha=0.7, label='Đặc trưng đầu vào')\n    plt.axhline(y=prediction, color='r', linestyle='-', label='Chất lượng dự đoán')\n    # Đặt màu cho cột dự đoán\n    bars[feature_names.index('Độ pH')].set_color('r')",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "app",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "app = Flask(__name__)\nCORS(app)  # Kích hoạt CORS cho tất cả các đường dẫn\n# Dữ liệu huấn luyện và mô hình\nX_train = [\n    [7.3, 0.67, 0.02, 2.4, 0.083, 9.0, 52.0, 0.9968, 3.36, 0.61, 9.9],\n    [7.0, 0.68, 0.06, 1.8, 0.075, 17.0, 26.0, 0.9976, 3.48, 0.57, 9.3],\n    [8.3, 0.42, 0.62, 19.25, 0.040, 41.0, 172.0, 1.0002, 2.98, 0.67, 9.3],\n    [6.8, 0.63, 0.12, 3.8, 0.099, 16.0, 126.0, 0.9969, 3.55, 0.63, 10.2],\n    [6.9, 0.58, 0.01, 1.9, 0.080, 8.0, 22.0, 0.9968, 3.38, 0.52, 9.4],\n    [8.1, 0.64, 0.24, 2.8, 0.094, 5.0, 13.0, 0.9972, 3.37, 0.65, 9.7],",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "X_train",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "X_train = [\n    [7.3, 0.67, 0.02, 2.4, 0.083, 9.0, 52.0, 0.9968, 3.36, 0.61, 9.9],\n    [7.0, 0.68, 0.06, 1.8, 0.075, 17.0, 26.0, 0.9976, 3.48, 0.57, 9.3],\n    [8.3, 0.42, 0.62, 19.25, 0.040, 41.0, 172.0, 1.0002, 2.98, 0.67, 9.3],\n    [6.8, 0.63, 0.12, 3.8, 0.099, 16.0, 126.0, 0.9969, 3.55, 0.63, 10.2],\n    [6.9, 0.58, 0.01, 1.9, 0.080, 8.0, 22.0, 0.9968, 3.38, 0.52, 9.4],\n    [8.1, 0.64, 0.24, 2.8, 0.094, 5.0, 13.0, 0.9972, 3.37, 0.65, 9.7],\n    [7.5, 0.49, 0.36, 6.1, 0.071, 17.0, 102.0, 0.9978, 3.35, 0.80, 10.5],\n    [7.4, 0.34, 0.42, 1.1, 0.033, 17.0, 76.0, 0.9962, 3.2, 0.74, 10.8],\n]",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "y_train",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "y_train = [5, 6, 4, 7, 5, 6, 7, 8]\nmodel = DecisionTreeRegressor()\nmodel.fit(X_train, y_train)\n# Định tuyến đến trang chủ hiển thị \n@app.route('/index')\ndef index():\n    return render_template('index.html')\ndef save_plot(features, quality_prediction):\n    # Tạo một đối tượng Figure với kích thước là 10x6 inches\n    plt.figure(figsize=(10, 6))",
+        "detail": "app",
+        "documentation": {}
+    },
+    {
+        "label": "model",
+        "kind": 5,
+        "importPath": "app",
+        "description": "app",
+        "peekOfCode": "model = DecisionTreeRegressor()\nmodel.fit(X_train, y_train)\n# Định tuyến đến trang chủ hiển thị \n@app.route('/index')\ndef index():\n    return render_template('index.html')\ndef save_plot(features, quality_prediction):\n    # Tạo một đối tượng Figure với kích thước là 10x6 inches\n    plt.figure(figsize=(10, 6))\n    # Lưu biểu đồ xuống một tệp tạm thời với định dạng PNG",
+        "detail": "app",
+        "documentation": {}
+    }
+]

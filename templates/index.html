@@ -1,0 +1,447 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Dự Đoán Chất Lượng Rượu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        
+        h2 {
+            color: #333;
+        }
+        
+        form {
+            max-width: 400px;
+            margin: 20px 0;
+        }
+        
+        label {
+            display: block;
+            font-size:18px;
+            font-family: 'Times New Roman', Times, serif;
+            margin-bottom: 4px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f5f5f5; /* Add background color */
+        }
+        
+        
+            .predict-button {
+                color: white;
+                font-size: 18px;
+                font-family: 'Times New Roman', Times, serif;
+                background-color: blue; /* Change to the color you want for the predict button */
+                padding: 7px 10px;
+                border-radius: 10px;
+                width: 170px;
+                margin: 5px;
+                border: 1px solid #ccc;
+            }
+        
+            .reset-button {
+                color: white;
+                font-size: 18px;
+                font-family: 'Times New Roman', Times, serif;
+                background-color: red;
+                padding: 7px 10px;
+                border-radius: 10px;
+                width: 170px;
+                margin: 5px;
+                border: 1px solid #ccc;
+            }
+        
+            .random-button {
+                color: white;
+                font-size: 18px;
+                font-family: 'Times New Roman', Times, serif;
+                background-color: green; /* Change to the color you want for the random button */
+                padding: 7px 10px;
+                border-radius: 10px;
+                width: 350px;
+                margin: 5px;
+                border: 1px solid #ccc;
+            }
+        
+        
+        
+        p {
+            margin-top: 20px;
+        }
+        #chartContainer {
+            text-align: right; /* Set text alignment to right */
+            position: absolute;
+            top: 10%;
+            right:10%;
+        }
+        #predictionResult {
+            font-size: 18px;  /* Adjust the font size as needed */
+            font-weight: bold;  /* Make the text bold for emphasis */
+            color: #333;  /* Set the text color to a dark color for contrast */
+            margin-top: 10px;  /* Add some top margin for separation from other elements */
+        }
+        header {
+            width:100%;
+            height:5vh;
+            background: linear-gradient(to right, #3498db, #8e44ad); /* Replace these colors with your desired gradient */
+            color: white; /* Text color, you can adjust it based on your gradient colors */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        footer {
+            width:100%;
+            height:5vh;
+            background: linear-gradient(to right, #3498db, #8e44ad); /* Replace these colors with your desired gradient */
+            color: white; /* Text color, you can adjust it based on your gradient colors */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        header nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        header nav li {
+            float: left;
+            
+            
+        }
+
+        header nav li a {
+            display: block;
+            text-decoration: none;
+            font-size: 20px;
+            color: #333; /* Set your preferred text color */
+            margin-left: 20px;
+        }
+        header nav li a:hover {
+            display: block;
+            text-decoration: none;
+            font-size: 20px;
+            color: #fff; /* Set your preferred text color */
+            margin-left: 20px;
+        }
+
+        #hinhanh {
+            width: 400px;
+            height: 350px;
+            display: flex;
+           
+        }
+        h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+        
+        
+        
+        /* ... thêm các kiểu CSS khác tùy thuộc vào ý thích của bạn */
+        
+    </style>
+
+</head>
+<body>
+    <header>KHAI PHÁ DỮ LIỆU <nav>
+        <ul>
+            <li><a href="#" onclick="showContent('TrangChuKPDL')">Trang chủ</a></li>
+            <li><a href="#" onclick="showContent('Demo')">Demo</a></li>
+        </ul>
+    </nav>
+</header>
+<div class = "noidung" id = "TrangChuKPDL">
+<h1>TỔNG QUAN VỀ KHAI PHÁ DỮ LIỆU</h1>
+<h3>1. Khai phá dữ liệu (Data Mining) là gì?</h3>
+<img id = "hinhanh" src = "https://plus.vtc.edu.vn/wp-content/uploads/2022/09/Data-mining-la-gi.jpg"> 
+
+<p>Dữ liệu
+    (Data
+    ): có thể xem là chuỗi các
+    bit, là số, ký tự
+    …mà chúng ta thu thập
+    hàng ngày trong công việc.
+</p>
+<p>
+    Thông tin
+    (Information
+    ): là tập hợp của
+    những dữ liệu đã được xử lý, dùng mô
+    tả, giải thích đặc tính của một đối
+    tượng nào đó
+</p>
+<p>
+    Tri thức
+    (Knowledge
+    ): là tập hợp
+    những thông tin có liên hệ với nhau,
+    được lập luận chặt chẽ hoặc được thực
+    nghiệm kiểm chứng quan nhiều thế hệ
+    .
+    Tri thức thể hiện tư duy của con người
+    về một vấn đề. </p>
+
+<h3>2. Tại Sao Phải Khai Phá Dữ Liệu?</h3>
+<img id = "hinhanh" src = "https://png.pngtree.com/png-clipart/20201123/ourlarge/pngtree-three-question-mark-clouds-clipart-png-image_2460568.jpg"> 
+<p>Khám phá thông tin ẩn: Dữ liệu thường chứa những thông tin ẩn mà không thể dễ dàng nhận biết hoặc hiểu được bằng các phương pháp thông thường.</p>
+
+<p>Dự đoán và dự báo: Khai phá dữ liệu có thể giúp dự đoán xu hướng tương lai và dự báo kết quả dựa trên dữ liệu hiện tại.</p>
+
+<p>Tối ưu hóa quyết định: Cung cấp thông tin hữu ích để hỗ trợ quyết định trong kinh doanh, y tế, tài chính, và nhiều lĩnh vực khác.</p>
+
+<p>Tăng hiệu suất: Phát hiện ra các mô hình và quy luật giúp tối ưu hóa quy trình, làm tăng hiệu suất và giảm chi phí.</p>
+
+<p>Hiểu rõ đối tượng khách hàng: Trong lĩnh vực tiếp thị, khai phá dữ liệu có thể giúp doanh nghiệp hiểu rõ hơn về đối tượng khách hàng, nhu cầu của họ, và làm thế nào để tối ưu hóa chiến lược tiếp thị.</p>
+
+<h3>3. Lợi ích khi Khai Phá Dữ Liệu</h3>
+<img id = "hinhanh" src = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTzKxpo5LbzTG49xx6auna14sQEW62MI8zKWw&usqp=CAU"> 
+<p>Hiểu biết sâu sắc: Giúp hiểu rõ thông tin, mối quan hệ, và xu hướng mà không cần biết trước.</p>
+
+<p>Dự đoán chính xác: Cung cấp khả năng dự đoán tốt hơn về sự kiện tương lai dựa trên dữ liệu quá khứ.</p>
+
+<p>Tối ưu hóa quyết định: Hỗ trợ quyết định thông minh dựa trên thông tin đã được khai phá.</p>
+
+<p>Tìm kiếm cơ hội: Phát hiện cơ hội mới, xu hướng thị trường, và khía cạnh tiềm năng chưa được khám phá.</p>
+
+<h3>4. Các Công Cụ Khai Phá Dữ Liệu</h3>
+<img id = "hinhanh" src = "https://insight.isb.edu.vn/wp-content/uploads/sites/2/2019/11/Vien-ISB_cac-cong-cu-khai-pha-du-lieu-Data-Mining.png">
+<p><strong>1. RapidMiner:</strong></p>
+<p>RapidMiner là một công cụ mã nguồn mở và mạnh mẽ dành cho việc khai phá dữ liệu và phân tích dữ liệu.</p>
+<p>Nó hỗ trợ nhiều nhiệm vụ như phân loại, gom nhóm, dự đoán, và phân tích chuỗi thời gian.</p>
+
+<p><strong>2. Weka:</strong></p>
+<p>Weka là một công cụ khai phá dữ liệu mã nguồn mở được phát triển bằng Java.</p>
+<p>Nó cung cấp một loạt các thuật toán khai phá dữ liệu và có thể được tích hợp vào các ứng dụng Java khác.</p>
+
+<p><strong>3. KNIME:</strong></p>
+<p>KNIME là một nền tảng tích hợp cho khai phá dữ liệu và phân tích dữ liệu.</p>
+<p>Nó cho phép người dùng kết nối các thành phần thông qua giao diện đồ họa, tạo quy trình phức tạp mà không cần viết mã.</p>
+
+<p><strong>4. IBM SPSS Modeler:</strong></p>
+<p>IBM SPSS Modeler là một công cụ mạnh mẽ cho việc xây dựng và triển khai mô hình dự đoán và phân tích dữ liệu.</p>
+<p>Nó hỗ trợ nhiều thuật toán khai phá dữ liệu và có tính năng tương tác đồ họa.</p>
+
+<p><strong>5. Orange:</strong></p>
+<p>Orange là một công cụ khai phá dữ liệu mã nguồn mở với giao diện đồ họa dễ sử dụng.</p>
+<p>Nó cung cấp nhiều công cụ cho việc xây dựng mô hình, phân tích dữ liệu, và trực quan hóa kết quả.</p>
+
+<p><strong>6. Microsoft SQL Server Analysis Services (SSAS):</strong></p>
+<p>SSAS là một dịch vụ của Microsoft SQL Server chuyên về việc phân tích và khai phá dữ liệu.</p>
+<p>Nó hỗ trợ việc xây dựng mô hình dữ liệu và triển khai chúng cho các ứng dụng doanh nghiệp.</p>
+
+<p><strong>7. Tableau:</strong></p>
+<p>Tableau không chỉ là một công cụ trực quan hóa dữ liệu mạnh mẽ mà còn có tích hợp khả năng khai phá dữ liệu.</p>
+<p>Nó cho phép người dùng thực hiện phân tích sâu sắc trên dữ liệu và xây dựng các bảng điều khiển tương tác.</p>
+
+ <h3>5. Ứng Dụng Khai Phá Dữ Liệu</h3>
+ <img id = "hinhanh" src = "https://cloud.z.com/vn/wp-content/uploads/2023/07/data-mining-applications.png">
+ <p>Phân tích thị trường: Data mining giúp các công ty nắm bắt thông tin về xu hướng tiêu dùng, sở thích khách hàng và mẫu mua hàng. Điều này giúp các công ty xác định được các khách hàng tiềm năng, đưa ra chiến lược marketing hiệu quả và tối ưu hóa quy trình kinh doanh.</p>
+
+ <p>Dự báo và dự đoán: Data mining giúp dự đoán xu hướng và biến đổi tương lai dựa trên các mẫu dữ liệu từ quá khứ. Điều này có thể áp dụng trong các lĩnh vực như dự báo doanh thu, dự báo xu hướng thị trường, dự đoán rủi ro tài chính, dự đoán kết quả thể thao và nhiều ứng dụng khác.</p>
+ 
+ <p>Phân loại và nhóm dữ liệu: Data mining giúp phân loại dữ liệu vào các nhóm tương tự dựa trên các thuộc tính chung. Ví dụ, trong lĩnh vực y tế, data mining có thể được sử dụng để phân loại bệnh nhân vào các nhóm rủi ro khác nhau hoặc nhóm lại các bệnh nhân có triệu chứng tương tự.</p>
+ 
+ <p>Phát hiện gian lận: Data mining có thể phát hiện các mẫu bất thường hoặc hành vi gian lận từ dữ liệu. Ví dụ, trong lĩnh vực tài chính, data mining có thể giúp phát hiện gian lận tín dụng hoặc giao dịch gian lận.</p>
+ 
+ <p>Phân tích chuỗi thời gian: Data mining cũng được sử dụng để phân tích và dự đoán các chuỗi thời gian, như dự đoán cung-đòn, phân tích lưu lượng mạng, hoặc phân tích dữ liệu về thời tiết.</p>
+ 
+ <p>Khoáng đá quy luật: Data mining giúp tìm ra các quy luật ẩn trong dữ liệu, ví dụ như quy luật mua hàng, quy luật trang web hoặc quy luật thiết kế.</p>
+ 
+ <p>Hỗ trợ quyết định: Data mining cung cấp thông tin quan trọng để hỗ trợ quyết định trong các lĩnh vực như kinh doanh, y tế, tài chính và nhiều lĩnh vực khác. Các công ty và tổ chức có thể sử dụng data mining để tìm ra các chiến lược và kế hoạch tối ưu dựa trên dữ liệu.</p>
+ 
+ <p>Khám phá tri thức: Data mining giúp khám phá tri thức mới từ dữ liệu, phát hiện ra mối quan hệ và kiến thức có giá trị từ những dữ liệu đã có sẵn.</p>
+ 
+ <p>Tóm lại, data mining có nhiều ứng dụng rộng rãi trong các lĩnh vực và đóng vai trò quan trọng trong việc hỗ trợ quyết định và tạo ra giá trị từ dữ liệu.</p>
+ 
+<h3>6. Kết Luận</h3>
+<img id = "hinhanh" src = "https://cloud.z.com/vn/wp-content/uploads/2023/07/data-mining-techniques.png">
+
+<p>Data mining là một quá trình mạnh mẽ và hữu ích để khám phá tri thức và thông tin tiềm ẩn từ dữ liệu. Qua quy trình này, chúng ta có thể tìm ra các mô hình, quy luật và quy tắc ẩn trong dữ liệu để giúp trong việc ra quyết định, dự đoán và tối ưu hóa quy trình kinh doanh.</p>
+
+<p>Việc áp dụng data mining trong các lĩnh vực như tiếp thị, tài chính, y tế, khoa học và nhiều lĩnh vực khác đã mang lại những lợi ích lớn. Nó giúp chúng ta hiểu rõ hơn về khách hàng, tìm ra khách hàng tiềm năng, dự đoán xu hướng thị trường, phát hiện gian lận tài chính, tối ưu hóa quy trình sản xuất và nhiều ứng dụng khác.</p>
+
+<p>Tuy nhiên, để thành công trong quá trình khai phá dữ liệu, chúng ta cần đảm bảo rằng dữ liệu đã được tiền xử lý đúng cách và phân tích dựa trên các thuật toán phù hợp. Việc tiền xử lý giúp làm sạch, chuyển đổi và xử lý dữ liệu thiếu, trong khi việc chọn thuật toán phù hợp đảm bảo khám phá dữ liệu hiệu quả.</p>
+
+<p>Hơn nữa, việc đánh giá và cải thiện các mô hình khai phá dữ liệu là cần thiết để đảm bảo tính nhất quán và chính xác của kết quả. Quá trình này liên tục được lặp lại để tìm ra các cải thiện và tối ưu hóa mô hình dựa trên phản hồi thực tế.</p>
+
+<p>Data mining đóng vai trò quan trọng trong việc hỗ trợ quyết định và nâng cao sự hiểu biết về dữ liệu. Nó giúp chúng ta khám phá thông tin ẩn và tri thức quý giá từ dữ liệu, mở ra những cơ hội mới và tiềm năng cho các doanh nghiệp và tổ chức.</p>
+
+
+<h4>Các tài Liệu liên Quan </h4>
+<p>Huỳnh Lê Uyên Minh,<a href = "https://mit.dthu.edu.vn/Author.aspx?id=D2570150000338" target="_blank">"Vận dụng phép tách nhị phân divide-by-2 cho phân lớp đa lớp hỗ trợ việc nghiên cứu và giảng dạy môn học khai khoáng dữ liệu"Tập 167, Số 2, 2018, xx-xx.</a></p>
+<p>Huỳnh Lê Uyên Minh,<a href = ""> "Hệ thống hàm trong hỗ trợ việc dạy và thực hành giải thuật rừng ngẫu nhiên trong môn Khai khoáng dữ liệu", Thiết bị giáo dục Hiệp hội TBGD VN (ISSN:1859-0810), Tập 146, Số 1, 2017, xx-xx.</a> </p>
+
+</div>
+
+<div class = "noidung" id ="Demo">
+    <h2>Dự Đoán Chất Lượng Rượu</h2>
+
+    <form action="/plot" method="post" id="predictionForm">
+        <label for="fixed_acidity">Độ axit cố định (g/dm3):</label>
+        <input type="number" id="fixed_acidity" name="feature_0" step="0.01" required><br>
+
+        <label for="volatile_acidity">Độ bay hơi axit (g/dm3):</label>
+        <input type="number" id="volatile_acidity" name="feature_1" step="0.01" required><br>
+
+        <label for="citric_acid">Axit citric (g/dm3):</label>
+        <input type="number" id="citric_acid" name="feature_2" step="0.01" required><br>
+
+        <label for="residual_sugar">Đường dư (g/dm3):</label>
+        <input type="number" id="residual_sugar" name="feature_3" step="0.01" required><br>
+
+        <label for="chlorides">Hợp chất clorua:</label>
+        <input type="number" id="chlorides" name="feature_4" step="0.01" required><br>
+
+        <label for="free_sulfur_dioxide">Lưu huỳnh đioxit tự do (mg/dm3):</label>
+        <input type="number" id="free_sulfur_dioxide" name="feature_5" step="0.01" required><br>
+
+        <label for="total_sulfur_dioxide">Tổng lượng lưu huỳnh điôxít (mg/dm3):</label>
+        <input type="number" id="total_sulfur_dioxide" name="feature_6" step="0.01" required><br>
+
+        <label for="density">Mật độ (g/cm3):</label>
+        <input type="number" id="density" name="feature_7" step="0.01" required><br>
+
+        <label for="pH">Độ pH:</label>
+        <input type="number" id="pH" name="feature_8" step="0.01" required><br>
+
+        <label for="sulphates">Muối Sulfat (g/dm3):</label>
+        <input type="number" id="sulphates" name="feature_9" step="0.01" required><br>
+
+        <label for="alcohol">Nồng độ cồn (%vol):</label>
+        <input type="number" id="alcohol" name="feature_10" step="0.01" required><br>
+
+        <button type="button" onclick="predictQuality()" class="predict-button">Dự Đoán</button>
+        <button type="button" onclick="resetForm()" class="reset-button">Reset</button>
+        <button type="button" onclick="generateRandomValues()" class="random-button">Random Đặc Trưng</button>
+</form>
+    <div id="chartContainer">
+
+    </div>
+
+    <p id="predictionResult"></p>
+</div>
+<footer>power by &copy;me
+    <a href = "https://www.dthu.edu.vn/" target="_blank">Trường Đại Học Đồng Tháp</a> <br>
+    <a href = "https://mit.dthu.edu.vn/" target="_blank">Khoa Sư Phạm Toán Tin</a>
+</footer>
+    <script>
+        function predictQuality() {
+            // Get input values from the form
+            var formData = new FormData(document.getElementById('predictionForm'));
+        
+            // Check if any input field is empty or contains special characters
+            var isValid = true;
+            formData.forEach(function(value) {
+                if (value.trim() === "") {
+                    isValid = false;
+                }
+            });
+        
+            if (!isValid) {
+                alert("Vui lòng nhập giá trị hợp lệ cho tất cả các ô nhập.");
+                return;
+            }
+        
+            // Send a POST request to the /plot endpoint
+            fetch('/plot', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display prediction result
+                var qualityPrediction = parseFloat(data.prediction);
+                var predictionMessage = getPredictionMessage(qualityPrediction);
+        
+                // Extract feature values from the form data
+                var featureValues = Array.from(formData.values());
+        
+                // Format the prediction result with both numeric value, message, and feature values
+                var predictionResultText = 'Chất lượng dự đoán: ' + '['+ qualityPrediction.toFixed(2) + ']' + ' - ' + predictionMessage +
+                                          '\nĐặc trưng: ' + '[' + featureValues.map(value => parseFloat(value).toFixed(2)).join(', ') + ']';
+        
+                document.getElementById('predictionResult').innerText = predictionResultText;
+        
+                // Display the chart
+                var img = new Image();
+                img.src = 'data:image/png;base64, ' + data.img;
+                document.getElementById('chartContainer').innerHTML = '';
+                document.getElementById('chartContainer').appendChild(img);
+            });
+        }
+        
+        
+        
+        function getPredictionMessage(qualityPrediction) {
+            if (qualityPrediction >= 5 && qualityPrediction <= 6.5) {
+                return 'Rượu tốt';
+            } else {
+                return 'Rượu kém';
+            }
+        }
+        function resetForm() {
+            // Reset all input fields to their default values
+            document.getElementById('predictionForm').reset();
+            var predictionResultText = 'Chất lượng dự đoán: '+ '';
+            document.getElementById('predictionResult').innerText = predictionResultText;
+            document.getElementById('chartContainer').innerHTML = '';
+        }
+
+        function generateRandomValues() {
+            // Generate random values for each input field
+            document.getElementById('fixed_acidity').value = getRandomValue();
+            document.getElementById('volatile_acidity').value = getRandomValue();
+            document.getElementById('citric_acid').value = getRandomValue();
+            document.getElementById('residual_sugar').value = getRandomValue();
+            document.getElementById('chlorides').value = getRandomValue();
+            document.getElementById('free_sulfur_dioxide').value = getRandomValue();
+            document.getElementById('total_sulfur_dioxide').value = getRandomValue();
+            document.getElementById('density').value = getRandomValue();
+            document.getElementById('pH').value = getRandomValue();
+            document.getElementById('sulphates').value = getRandomValue();
+            document.getElementById('alcohol').value = getRandomValue();
+        }
+        
+        function getRandomValue() {
+            // Generate a random value between 0 and 10 (adjust the range as needed)
+            return (Math.random() * 10).toFixed(2);
+        }
+
+        function showContent(id) {
+            // Ẩn tất cả các phần nội dung
+            var sections = document.getElementsByClassName("noidung");
+            for (var i = 0; i < sections.length; i++) {
+                sections[i].style.display = "none";
+            }
+        
+            // Hiển thị phần nội dung được chọn
+            var selectedSection = document.getElementById(id);
+            selectedSection.style.display = "block";
+        }
+        // Mặc định, hiển thị trang chủ
+        showContent('TrangChuKPDL');
+    </script>        
+</body>
+</html>
+
